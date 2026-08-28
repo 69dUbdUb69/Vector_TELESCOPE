@@ -1,0 +1,11 @@
+{ VectorScript Example: HelloWorld }
+{ Ce script affiche simplement une boîte de dialogue avec un message }
+
+PROCEDURE HelloWorld;
+BEGIN
+    { Afficher un message simple }
+    Message("Hello, Vectorworks!");
+END;
+
+{ Exécuter la procédure }
+RUN(HelloWorld);

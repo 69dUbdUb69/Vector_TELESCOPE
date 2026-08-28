@@ -1,0 +1,60 @@
+{ VectorScript Example: CreateWall }
+{ Ce script crée un mur avec des paramètres personnalisables }
+
+PROCEDURE CreateWall;
+VAR
+    wallHandle : HANDLE;   { Référence au mur }
+    startX, startY : REAL;  { Position de départ }
+    length : REAL;         { Longueur du mur }
+    height : REAL;         { Hauteur du mur }
+    thickness : REAL;      { Épaisseur du mur }
+BEGIN
+    { ==================================================================== }
+    { CONFIGURATION DES PARAMÈTRES }
+    { ==================================================================== }
+    
+    { Position de départ (en mm) }
+    startX := 0;
+    startY := 0;
+    
+    { Dimensions du mur (en mm) }
+    length := 5000;    { 5 mètres }
+    height := 3000;    { 3 mètres }
+    thickness := 200;  { 20 cm }
+    
+    { ==================================================================== }
+    { CRÉATION DU MUR }
+    { ==================================================================== }
+    
+    { Créer le mur }
+    wallHandle := Wall(startX, startY, length, height, thickness);
+    
+    { Vérifier que le mur a été créé }
+    If (wallHandle = Nil) Then BEGIN
+        Message("Erreur : Impossible de créer le mur!");
+        EXIT;
+    END;
+    
+    { ==================================================================== }
+    { PERSONNALISATION DU MUR }
+    { ==================================================================== }
+    
+    { Définir le matériau (si disponible) }
+    { Note: Les noms de matériaux dépendent de votre bibliothèque }
+    SetWallMaterial(wallHandle, 'Brique');
+    
+    { Définir la couleur }
+    SetColor(wallHandle, 200, 100, 50); { Marron }
+    
+    { Définir le nom du mur }
+    SetName(wallHandle, 'Mon Mur Personnalisé');
+    
+    { Sélectionner le mur }
+    SetSelect(wallHandle);
+    
+    { Afficher un message de confirmation }
+    Message("Mur créé avec succès!");
+END;
+
+{ Exécuter la procédure }
+RUN(CreateWall);

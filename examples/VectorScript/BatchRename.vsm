@@ -1,0 +1,79 @@
+{ VectorScript Example: BatchRename }
+{ Ce script renomme plusieurs objets sélectionnés avec un préfixe }
+
+PROCEDURE BatchRename;
+VAR
+    h : HANDLE;             { Référence à un objet }
+    prefix : STRING;        { Préfixe pour le renommage }
+    count : INTEGER;        { Compteur }
+    newName : STRING;       { Nouveau nom }
+    numObjects : INTEGER;    { Nombre d'objets renommés }
+BEGIN
+    { ==================================================================== }
+    { DEMANDER LE PRÉFIXE }
+    { ==================================================================== }
+    
+    { Afficher une boîte de dialogue pour demander le préfixe }
+    If (NOT GetString("Préfixe pour le renommage", prefix, 'Objet')) Then BEGIN
+        Message("Renommage annulé!");
+        EXIT;
+    END;
+    
+    { ==================================================================== }
+    { VÉRIFIER LA SÉLECTION }
+    { ==================================================================== }
+    
+    { Vérifier s'il y a des objets sélectionnés }
+    h := FSActLayer;
+    numObjects := 0;
+    
+    { Compter les objets sélectionnés }
+    While (h <> Nil) Do BEGIN
+        If (GetSelect(h)) Then BEGIN
+            numObjects := numObjects + 1;
+        END;
+        h := NextObj(h);
+    END;
+    
+    { Si aucun objet sélectionné, afficher un message et quitter }
+    If (numObjects = 0) Then BEGIN
+        Message("Aucun objet sélectionné!\nVeuillez sélectionner des objets avant de lancer le script.");
+        EXIT;
+    END;
+    
+    { ==================================================================== }
+    { RENOMMER LES OBJETS }
+    { ==================================================================== }
+    
+    { Réinitialiser le compteur }
+    count := 1;
+    
+    { Obtenir le premier objet de la couche active }
+    h := FSActLayer;
+    
+    { Parcourir tous les objets }
+    While (h <> Nil) Do BEGIN
+        { Vérifier si l'objet est sélectionné }
+        If (GetSelect(h)) Then BEGIN
+            { Créer un nouveau nom avec le préfixe et un numéro }
+            newName := Concat(prefix, ' ', Num2Str(0, count));
+            
+            { Renommer l'objet }
+            SetName(h, newName);
+            
+            { Incrémenter le compteur }
+            count := count + 1;
+        END;
+        
+        { Passer à l'objet suivant }
+        h := NextObj(h);
+    END;
+    
+    { ==================================================================== }
+    { AFFICHER UN MESSAGE DE CONFIRMATION }
+    { ==================================================================== }
+    Message(Concat(Num2Str(0, numObjects), ' objets renommés avec le préfixe "', prefix, '"'));
+END;
+
+{ Exécuter la procédure }
+RUN(BatchRename);

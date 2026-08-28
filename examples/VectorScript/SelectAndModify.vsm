@@ -1,0 +1,78 @@
+{ VectorScript Example: SelectAndModify }
+{ Ce script sélectionne tous les cercles et les modifie }
+
+PROCEDURE SelectAndModify;
+VAR
+    h : HANDLE;       { Référence à un objet }
+    radius : REAL;    { Rayon du cercle }
+    count : INTEGER;  { Compteur d'objets modifiés }
+BEGIN
+    { ==================================================================== }
+    { DÉSÉLECTIONNER TOUT }
+    { ==================================================================== }
+    DSelectAll;
+    
+    { ==================================================================== }
+    { SÉLECTIONNER TOUS LES CERCLES }
+    { ==================================================================== }
+    
+    { Obtenir le premier objet de la couche active }
+    h := FSActLayer;
+    count := 0;
+    
+    { Parcourir tous les objets }
+    While (h <> Nil) Do BEGIN
+        { Vérifier si l'objet est un cercle (type 3) }
+        If (GetType(h) = 3) Then BEGIN
+            SetSelect(h); { Sélectionner le cercle }
+            count := count + 1;
+        END;
+        
+        { Passer à l'objet suivant }
+        h := NextObj(h);
+    END;
+    
+    { Afficher un message si aucun cercle trouvé }
+    If (count = 0) Then BEGIN
+        Message("Aucun cercle trouvé dans le document!");
+        EXIT;
+    END;
+    
+    { ==================================================================== }
+    { MODIFIER LES CERCLES SÉLECTIONNÉS }
+    { ==================================================================== }
+    
+    { Réinitialiser le compteur }
+    count := 0;
+    
+    { Obtenir le premier objet de la couche active }
+    h := FSActLayer;
+    
+    { Parcourir à nouveau tous les objets }
+    While (h <> Nil) Do BEGIN
+        { Vérifier si l'objet est sélectionné }
+        If (GetSelect(h)) Then BEGIN
+            { Changer la couleur en rouge }
+            SetColor(h, 255, 0, 0);
+            
+            { Changer le rayon à 100mm }
+            radius := 100;
+            SetRadius(h, radius);
+            
+            count := count + 1;
+        END;
+        
+        h := NextObj(h);
+    END;
+    
+    { ==================================================================== }
+    { METTRE À JOUR L'AFFICHAGE }
+    { ==================================================================== }
+    UpdateDisplay;
+    
+    { Afficher un message de confirmation }
+    Message(Concat(Num2Str(0, count), ' cercles modifiés'));
+END;
+
+{ Exécuter la procédure }
+RUN(SelectAndModify);

@@ -1,0 +1,56 @@
+{ VectorScript Example: DrawShapes }
+{ Ce script dessine différentes formes géométriques }
+
+PROCEDURE DrawShapes;
+VAR
+    h1, h2, h3, h4 : HANDLE;  { Références aux objets créés }
+BEGIN
+    { Désélectionner tout avant de commencer }
+    DSelectAll;
+    
+    { ==================================================================== }
+    { DESSINER UNE LIGNE }
+    { ==================================================================== }
+    h1 := Line(0, 0, 100, 100);
+    SetColor(h1, 255, 0, 0); { Rouge }
+    SetPenSize(h1, 2); { Épaisseur de la ligne }
+    
+    { ==================================================================== }
+    { DESSINER UN CERCLE }
+    { ==================================================================== }
+    h2 := Circle(200, 0, 50); { Centre (200,0), rayon 50 }
+    SetColor(h2, 0, 0, 255); { Bleu }
+    SetPenSize(h2, 2);
+    SetFill(h2, TRUE); { Remplir le cercle }
+    SetFillColor(h2, 100, 100, 255); { Couleur de remplissage }
+    
+    { ==================================================================== }
+    { DESSINER UN RECTANGLE }
+    { ==================================================================== }
+    h3 := Rect(0, -100, 100, -50); { Coin inférieur gauche (0,-100), coin supérieur droit (100,-50) }
+    SetColor(h3, 0, 255, 0); { Vert }
+    SetPenSize(h3, 2);
+    SetFill(h3, TRUE);
+    SetFillColor(h3, 0, 200, 0);
+    
+    { ==================================================================== }
+    { DESSINER UN POLYGONE }
+    { ==================================================================== }
+    h4 := Polygon(5, 200, -100, 50); { 5 côtés, centre (200,-100), rayon 50 }
+    SetColor(h4, 255, 255, 0); { Jaune }
+    SetPenSize(h4, 2);
+    SetFill(h4, TRUE);
+    SetFillColor(h4, 255, 255, 100);
+    
+    { Sélectionner tous les objets créés }
+    SetSelect(h1);
+    SetSelect(h2);
+    SetSelect(h3);
+    SetSelect(h4);
+    
+    { Afficher un message de confirmation }
+    Message("Formes géométriques créées avec succès!");
+END;
+
+{ Exécuter la procédure }
+RUN(DrawShapes);

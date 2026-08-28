@@ -1,0 +1,76 @@
+{ VectorScript Example: ParametricObject }
+{ Ce script crée un rectangle avec des dimensions spécifiées par l'utilisateur }
+
+PROCEDURE ParametricObject;
+VAR
+    width, height : REAL;    { Largeur et hauteur du rectangle }
+    rectHandle : HANDLE;     { Référence au rectangle }
+    result : BOOLEAN;        { Résultat de la boîte de dialogue }
+BEGIN
+    { ==================================================================== }
+    { DEMANDER LES PARAMÈTRES À L'UTILISATEUR }
+    { ==================================================================== }
+    
+    { Demander la largeur (valeur par défaut: 100mm) }
+    result := GetReal("Largeur (mm)", width, 100);
+    
+    { Si l'utilisateur a cliqué sur Annuler, quitter }
+    If (NOT result) Then BEGIN
+        Message("Création annulée!");
+        EXIT;
+    END;
+    
+    { Demander la hauteur (valeur par défaut: 100mm) }
+    result := GetReal("Hauteur (mm)", height, 100);
+    
+    { Si l'utilisateur a cliqué sur Annuler, quitter }
+    If (NOT result) Then BEGIN
+        Message("Création annulée!");
+        EXIT;
+    END;
+    
+    { ==================================================================== }
+    { CRÉER LE RECTANGLE }
+    { ==================================================================== }
+    
+    { Créer un rectangle centré sur l'origine }
+    rectHandle := Rect(-width/2, -height/2, width/2, height/2);
+    
+    { Vérifier que le rectangle a été créé }
+    If (rectHandle = Nil) Then BEGIN
+        Message("Erreur : Impossible de créer le rectangle!");
+        EXIT;
+    END;
+    
+    { ==================================================================== }
+    { PERSONNALISER LE RECTANGLE }
+    { ==================================================================== }
+    
+    { Définir la couleur (bleu clair) }
+    SetColor(rectHandle, 100, 150, 255);
+    
+    { Définir la couleur de remplissage }
+    SetFill(rectHandle, TRUE);
+    SetFillColor(rectHandle, 150, 200, 255);
+    
+    { Définir l'épaisseur du contour }
+    SetPenSize(rectHandle, 2);
+    
+    { Définir le nom }
+    SetName(rectHandle, Concat('Rectangle ', Num2Str(0, width), 'x', Num2Str(0, height)));
+    
+    { Sélectionner le rectangle }
+    SetSelect(rectHandle);
+    
+    { ==================================================================== }
+    { AFFICHER UN MESSAGE DE CONFIRMATION }
+    { ==================================================================== }
+    Message(Concat(
+        'Rectangle créé avec succès!\n',
+        'Largeur: ', Num2Str(2, width), ' mm\n',
+        'Hauteur: ', Num2Str(2, height), ' mm'
+    ));
+END;
+
+{ Exécuter la procédure }
+RUN(ParametricObject);
